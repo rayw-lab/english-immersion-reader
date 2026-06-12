@@ -19,7 +19,20 @@ description: Build a local H5 English deep-reading lesson from an article URL, Y
 
 Follow `AGENTS.md` in this repository.
 
-Use `src/build_page.py` to build the static page and `src/tts_generate.py` to generate Edge mp3 audio.
+## Compile flow
+
+1. Write `lessons/<slug>/segments.json` per `AGENTS.md` (segments + hard +
+   chunks + patterns + transfer task + full `lexicon`).
+2. `python src/tts_generate.py lessons/<slug>/segments.json --out lessons/<slug>/audio`
+   — one command produces segment mp3s, per-word audio for every lexicon term
+   (default `--word-audio full`, so card/selection playback never falls back to
+   browser TTS), and `.words.json` sidecars that power the karaoke word
+   highlight. Needs network.
+3. `python src/build_page.py lessons/<slug>/segments.json --out lessons/<slug>`
+   — validates the contract, injects data + word timings, prints the Chinese
+   closeout block. Relay that block verbatim; do not invent a summary.
+4. Upgrading an older lesson: rerun step 2 (word audio fills in incrementally);
+   add `--force` to regenerate segment mp3s so they gain timing sidecars.
 
 Use this skill when the user asks for any of these:
 
