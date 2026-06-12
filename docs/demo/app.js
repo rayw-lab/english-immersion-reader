@@ -923,15 +923,21 @@
     if (text.length < 2) return null;
     if (/[一-龥]/.test(text)) return null;
     const range = sel.getRangeAt(0);
-    const segEl = (range.startContainer.nodeType === 1
+    const host = (range.startContainer.nodeType === 1
       ? range.startContainer
-      : range.startContainer.parentElement)?.closest?.(".seg");
-    if (!segEl) return null;
+      : range.startContainer.parentElement)?.closest?.(".seg, .pattern");
+    if (!host) return null;
+    const segEl = host.classList.contains("seg") ? host : null;
+    const patternEl = segEl ? null : host;
     const words = text.split(/\s+/).filter(Boolean);
-    return { text, words: words.length, chars: text.length, range, segEl };
+    return { text, words: words.length, chars: text.length, range, segEl, patternEl };
   }
 
   function selectionSentence(info) {
+    if (info.patternEl) {
+      const sentence = info.patternEl.querySelector("b");
+      return (sentence ? sentence.textContent : info.patternEl.textContent).trim().slice(0, 280);
+    }
     const en = data.segments[Number(info.segEl.dataset.i)]?.en || "";
     const probe = info.text.slice(0, 60);
     const hit = en.split(/(?<=[.!?])\s+/).find(s => s.includes(probe));

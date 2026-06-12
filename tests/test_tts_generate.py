@@ -34,7 +34,8 @@ def test_word_audio_slug_handles_spaces_and_apostrophes():
     assert tts_generate.word_audio_slug("A/B loop") == "a-b-loop"
 
 
-def test_word_audio_default_is_hard_and_chunks_not_full_lexicon(tmp_path):
+def test_word_audio_default_is_full_lexicon(tmp_path):
+    # 划词卡命中 lexicon 的长尾词也要有 Edge 音质; 默认 full 杜绝浏览器 TTS 兜底
     result = subprocess.run(
         [sys.executable, str(TTS), str(DEMO), "--out", str(tmp_path / "audio"), "--dry-run"],
         cwd=ROOT,
@@ -46,6 +47,18 @@ def test_word_audio_default_is_hard_and_chunks_not_full_lexicon(tmp_path):
     assert result.returncode == 0, result.stderr
     assert "audio/w/reliable.mp3" in result.stdout
     assert "audio/w/clear-constraint.mp3" in result.stdout
+    assert "audio/w/usually.mp3" in result.stdout
+
+    result = subprocess.run(
+        [sys.executable, str(TTS), str(DEMO), "--out", str(tmp_path / "audio"), "--word-audio", "hard", "--dry-run"],
+        cwd=ROOT,
+        text=True,
+        capture_output=True,
+        check=False,
+    )
+
+    assert result.returncode == 0, result.stderr
+    assert "audio/w/reliable.mp3" in result.stdout
     assert "audio/w/usually.mp3" not in result.stdout
 
     result = subprocess.run(

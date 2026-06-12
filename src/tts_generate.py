@@ -341,8 +341,8 @@ def parse_args(argv: Sequence[str] | None = None) -> argparse.Namespace:
     parser.add_argument(
         "--word-audio",
         choices=WORD_AUDIO_MODES,
-        default="hard",
-        help="Generate word/chunk card audio under audio/w/. Default: hard (hard terms + chunks).",
+        default="full",
+        help="Generate word/chunk card audio under audio/w/. Default: full (hard terms + chunks + lexicon, so selection-card playback never falls back to browser TTS).",
     )
     parser.add_argument("--force", action="store_true", help="Overwrite existing non-empty mp3 files.")
     parser.add_argument("--dry-run", action="store_true", help="Print planned mp3 outputs without network or writes.")

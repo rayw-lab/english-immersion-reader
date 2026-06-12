@@ -941,3 +941,37 @@ def test_karaoke_highlight_follows_playback_and_click_seeks():
                 timeout=5000,
             )
             browser.close()
+
+
+def test_pattern_skeleton_selection_opens_card():
+    build_demo()
+    with demo_server() as url:
+        with sync_playwright() as p:
+            browser = p.chromium.launch()
+            page = browser.new_page(viewport={"width": 1280, "height": 900})
+            page.goto(url)
+            page.wait_for_selector(".pattern")
+            page.evaluate(
+                """() => {
+                  const host = document.querySelector(".pattern b");
+                  const walker = document.createTreeWalker(host, NodeFilter.SHOW_TEXT);
+                  let node;
+                  while ((node = walker.nextNode())) {
+                    const idx = node.textContent.indexOf("reliable");
+                    if (idx >= 0) {
+                      const r = new Range();
+                      r.setStart(node, idx);
+                      r.setEnd(node, idx + 8);
+                      const sel = getSelection();
+                      sel.removeAllRanges();
+                      sel.addRange(r);
+                      host.dispatchEvent(new MouseEvent("mouseup", {bubbles: true}));
+                      return true;
+                    }
+                  }
+                  return false;
+                }"""
+            )
+            page.wait_for_selector(".term-popover .pop-def")
+            assert page.locator(".term-popover .pop-speak").count() == 1
+            browser.close()
