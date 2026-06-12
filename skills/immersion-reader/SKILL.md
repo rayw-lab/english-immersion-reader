@@ -5,6 +5,18 @@ description: Build a local H5 English deep-reading lesson from an article URL, Y
 
 # Immersion Reader
 
+## Setup (run once before first use)
+
+1. Locate the repo root: this skill folder lives at `<repo>/skills/immersion-reader/`
+   — resolve the real path of this file and go up two directories. If you only have
+   the skill folder (no repo), clone it first:
+   `git clone https://github.com/rayw-lab/english-immersion-reader`
+2. Install the two Python dependencies (Python >= 3.10):
+   `python3 -m pip install jsonschema edge-tts`
+   (or, inside the repo: `python3 -m pip install -e .`)
+3. `edge-tts` needs network access at synthesis time; the script manages proxy
+   env vars itself, so no proxy setup is required.
+
 Follow `AGENTS.md` in this repository.
 
 Use `src/build_page.py` to build the static page and `src/tts_generate.py` to generate Edge mp3 audio.
