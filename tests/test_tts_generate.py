@@ -235,7 +235,10 @@ def test_edge_stream_writes_audio_and_word_boundary_sidecar(tmp_path):
     asyncio.run(tts_generate.stream_with_word_boundaries(FakeCommunicate(), job))
 
     assert output.read_bytes() == b"fake mp3"
-    assert sidecar.read_text(encoding="utf-8") == '[{"text": "hello", "t0": 0.1, "t1": 0.3}]'
+    import json as _json
+    payload = _json.loads(sidecar.read_text(encoding="utf-8"))
+    assert payload["mp3_bytes"] == len(b"fake mp3")  # 指纹绑定本次合成的 mp3
+    assert payload["words"] == [{"text": "hello", "t0": 0.1, "t1": 0.3}]
 
 
 def test_plan_prefers_tts_text_and_skips_existing_nonempty_file(tmp_path):
