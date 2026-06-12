@@ -1,0 +1,22 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="color-scheme" content="light">
+  <link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><text y='.9em' font-size='90'>📖</text></svg>">
+  <title>{{TITLE}}</title>
+  <link rel="stylesheet" href="style.css">
+</head>
+<body>
+  <canvas id="halo" aria-hidden="true"></canvas>
+  <main id="app" class="app-shell"></main>
+  <div id="toast" class="toast" role="status" aria-live="polite"></div>
+  <script>
+    window.__LESSON_DATA__ = {{LESSON_JSON}};
+    window.__AUDIO_STATUS__ = {{AUDIO_STATUS_JSON}};
+    window.__WORD_TIMINGS__ = {{WORD_TIMINGS_JSON}};
+  </script>
+  <script src="app.js"></script>
+</body>
+</html>

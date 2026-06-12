@@ -1,0 +1,23 @@
+[project]
+name = "immersion-reader"
+version = "0.1.0"
+description = "Agent-built static English deep-reading pages"
+requires-python = ">=3.10"
+dependencies = [
+  "jsonschema>=4.0.0",
+  "edge-tts>=7.0.0"
+]
+
+[project.optional-dependencies]
+dev = [
+  "pytest>=8.0.0",
+  "playwright>=1.40.0"
+]
+local = [
+  "kokoro",
+  "soundfile"
+]
+
+[tool.pytest.ini_options]
+testpaths = ["tests"]
+pythonpath = ["src"]
