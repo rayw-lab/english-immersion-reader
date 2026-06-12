@@ -975,3 +975,34 @@ def test_pattern_skeleton_selection_opens_card():
             page.wait_for_selector(".term-popover .pop-def")
             assert page.locator(".term-popover .pop-speak").count() == 1
             browser.close()
+
+
+def test_title_zh_and_segment_nav_grid():
+    build_demo()
+    with demo_server() as url:
+        with sync_playwright() as p:
+            browser = p.chromium.launch()
+            page = browser.new_page(viewport={"width": 1280, "height": 900})
+            page.goto(url)
+            page.wait_for_selector(".seg")
+            assert page.locator(".hero .title-zh").inner_text().strip() != ""
+            # 中文标题字号显著小于主标题 (磊哥要求"字体要小")
+            sizes = page.evaluate(
+                """() => [
+                  parseFloat(getComputedStyle(document.querySelector('.hero h1')).fontSize),
+                  parseFloat(getComputedStyle(document.querySelector('.hero .title-zh')).fontSize),
+                ]"""
+            )
+            assert sizes[1] < sizes[0] * 0.5, sizes
+            # 播放器段落区点击 → 段号网格 → 跳转
+            page.locator("#nowPlaying").click()
+            page.wait_for_selector(".segnav-popover .blind-chip")
+            page.locator('[data-nav-seg="5"]').click()
+            page.wait_for_function(
+                """() => {
+                  const r = document.querySelector('.seg[data-i="5"]').getBoundingClientRect();
+                  return r.top > -60 && r.top < window.innerHeight * 0.8;
+                }"""
+            )
+            page.wait_for_selector(".segnav-popover", state="detached")
+            browser.close()

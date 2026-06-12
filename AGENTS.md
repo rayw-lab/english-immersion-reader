@@ -18,6 +18,13 @@ Rules are written in English. Learner-facing explanations, `zh`, `cn`, and close
 ## Required Data Rules
 
 - Keep `segments.json` as the only lesson data authority.
+- Segment length: aim for 60-100 English words per segment; split anything
+  over 110 words at a natural semantic boundary. Long segments unbalance the
+  side-by-side en/zh columns.
+- `zh` is a condensed gist, not a sentence-by-sentence translation. Target
+  zh character count ~= en word count x 2.0-2.5, consistent across segments.
+- `meta.title_zh` is required: a natural Chinese translation of the title
+  (rendered small under the English title).
 - Segment granularity is paragraph/segment level, not sentence level.
 - `zh` is required.
 - `tts` must expand numbers and abbreviations for English speech.

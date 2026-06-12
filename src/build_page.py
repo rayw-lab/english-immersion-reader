@@ -10,8 +10,10 @@ import jsonschema
 
 from lesson_quality import (
     LEXICON_COVERAGE_WARN_THRESHOLD,
+    SEGMENT_WORDS_LIMIT,
     british_ipa_entries,
     lexicon_coverage,
+    overlong_segments,
     required_word_audio_terms,
     word_audio_slug,
 )
@@ -137,6 +139,12 @@ def closeout(data: dict, out_dir: Path) -> str:
     if status["word_missing"]:
         lines.append(
             f"⚠ 词音频缺失 {len(status['word_missing'])}/{status['word_count']} 个, 卡片将用浏览器朗读兜底; 重跑: python src/tts_generate.py <segments.json> --out <lesson>/audio"
+        )
+    overlong = overlong_segments(data)
+    if overlong:
+        sample = " ".join(f"§{sid.split('-')[1].lstrip('0') or '0'}({words}词)" for sid, words in overlong[:6])
+        lines.append(
+            f"⚠ {len(overlong)} 段超 {SEGMENT_WORDS_LIMIT} 词: {sample}; 长段拉垮中英双栏观感, 建议拆段后重编译"
         )
     british_ipa = british_ipa_entries(data)
     if british_ipa:

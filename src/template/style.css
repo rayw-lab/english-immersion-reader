@@ -182,6 +182,29 @@ button { font: inherit; color: inherit; }
   font-weight: 700;
 }
 
+.title-zh {
+  margin: 8px 0 0;
+  font-size: 16px;
+  color: var(--ink-soft);
+  line-height: 1.5;
+}
+
+.segnav-popover { max-width: 372px; }
+
+.segnav-chips {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 8px;
+}
+
+.segnav-chips .blind-chip {
+  width: 40px;
+  height: 40px;
+  border-radius: 12px;
+}
+
+.p-now { cursor: pointer; }
+
 .source { margin: 0; color: var(--ink-faint); font-size: 14px; }
 .source a {
   color: var(--brand);
@@ -435,6 +458,9 @@ button { font: inherit; color: inherit; }
 .zh {
   margin: 0;
   align-self: start;
+  /* 长段时中文大意跟随滚动, 右栏不再大片空白 (76px = 顶栏+呼吸) */
+  position: sticky;
+  top: 76px;
   padding-left: 16px;
   border-left: 2px solid var(--line);
   color: var(--ink-faint);

@@ -271,3 +271,11 @@ def test_spec_acceptance_notes_current_visual_authority():
     assert "2026-06-11 当前验收注记" in spec
     assert "五个图标全部常显" in spec
     assert "1280px + 720px" in spec
+
+
+def test_title_zh_and_segnav_contract():
+    assert ".title-zh" in CSS
+    assert ".segnav-chips" in CSS
+    assert "position: sticky" in CSS  # zh 列跟随滚动
+    assert "title_zh" in APP
+    assert "data-nav-seg" in APP

@@ -98,3 +98,16 @@ def required_word_audio_terms(data: dict) -> list[str]:
         seen.add(slug)
         out.append(term)
     return out
+
+
+SEGMENT_WORDS_LIMIT = 110
+
+
+def overlong_segments(data: dict, limit: int = SEGMENT_WORDS_LIMIT) -> list[tuple[str, int]]:
+    """Segments exceeding the word limit — long paragraphs unbalance the en/zh columns."""
+    flagged: list[tuple[str, int]] = []
+    for segment in data.get("segments") or []:
+        words = len(str(segment.get("en") or "").split())
+        if words > limit:
+            flagged.append((str(segment.get("id")), words))
+    return flagged

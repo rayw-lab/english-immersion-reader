@@ -101,6 +101,7 @@
       <section class="hero">
         <p class="kicker">${meta.kind === "video" ? "视频精读" : "文章精读"} · Immersion Reader</p>
         <h1>${esc(meta.title)}</h1>
+        ${meta.title_zh ? `<p class="title-zh">${esc(meta.title_zh)}</p>` : ""}
         <p class="source">${sourceLine}</p>
         ${audioStatus.missing.length ? `<p class="audio-note">🔈 ${audioStatus.missing.length} 段音频缺失，将使用浏览器朗读兜底</p>` : ""}
       </section>
@@ -119,7 +120,7 @@
           <button id="prevBtn" class="p-step" title="上一段" aria-label="上一段">⏮</button>
           <button id="nextBtn" class="p-step" title="下一段" aria-label="下一段">⏭</button>
           <button id="abBtn" class="p-step p-ab" title="A-B 复读：播放中点一下设 A 点，再点设 B 点开始循环，第三下取消" aria-label="A-B 复读">A·B</button>
-          <div id="nowPlaying" class="p-now">
+          <div id="nowPlaying" class="p-now" title="点击展开段落跳转">
             <span id="pNow1">未选择段落</span>
             <span id="pNow2">点段落里的 ▶，或直接按左侧播放键</span>
           </div>
@@ -1329,6 +1330,23 @@
     setTimeout(() => el.classList.remove("jump-highlight"), 1400);
   }
 
+  function toggleSegNav(anchorEl) {
+    const existing = document.querySelector(".segnav-popover");
+    if (existing) { existing.remove(); return; }
+    if (state.blind) return; // 盲听态已有自己的 chip 网格
+    closePopovers();
+    const pop = document.createElement("div");
+    pop.className = "term-popover segnav-popover";
+    pop.innerHTML = `
+      <div class="pop-head"><span class="pop-word">跳转段落</span></div>
+      <div class="segnav-chips">${data.segments.map((seg, i) => `<button class="blind-chip${i === state.cur ? " current" : ""}" data-nav-seg="${i}">§${i + 1}</button>`).join("")}</div>
+    `;
+    document.body.appendChild(pop);
+    const rect = anchorEl.getBoundingClientRect();
+    pop.style.left = `${Math.max(12, Math.min(rect.left - 8, window.innerWidth - pop.offsetWidth - 12))}px`;
+    pop.style.top = `${Math.max(12, rect.top - pop.offsetHeight - 12)}px`;
+  }
+
   /* ---------- ambience: entrance stagger + halo ---------- */
 
   function observeFadeIns() {
@@ -1431,6 +1449,17 @@
       if (!mark && !hasSelection && !raw.closest(".term-popover") && !(target && target.dataset.chunk)) closePopovers();
       if (mark) {
         showTermPopover(mark, mark.dataset.term, markContext(mark));
+        return;
+      }
+      const nowEl = raw.closest("#nowPlaying");
+      if (nowEl) {
+        toggleSegNav(nowEl);
+        return;
+      }
+      const navChip = raw.closest("[data-nav-seg]");
+      if (navChip) {
+        closePopovers();
+        jumpToSegment(data.segments[Number(navChip.dataset.navSeg)].id);
         return;
       }
       if (!target) return;

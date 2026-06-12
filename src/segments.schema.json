@@ -1,49 +1,135 @@
 {
   "$schema": "https://json-schema.org/draft/2020-12/schema",
   "type": "object",
-  "required": ["meta", "voice", "segments", "chunks", "patterns"],
+  "required": [
+    "meta",
+    "voice",
+    "segments",
+    "chunks",
+    "patterns"
+  ],
   "additionalProperties": false,
   "properties": {
     "meta": {
       "type": "object",
-      "required": ["title", "source", "url", "kind", "lang", "study_card"],
+      "required": [
+        "title",
+        "source",
+        "url",
+        "kind",
+        "lang",
+        "study_card"
+      ],
       "additionalProperties": true,
       "properties": {
-        "title": {"type": "string", "minLength": 1},
-        "source": {"type": "string", "minLength": 1},
-        "url": {"type": "string"},
-        "kind": {"type": "string", "enum": ["article", "podcast", "video", "transcript"]},
-        "lang": {"type": "string", "const": "en"},
+        "title": {
+          "type": "string",
+          "minLength": 1
+        },
+        "source": {
+          "type": "string",
+          "minLength": 1
+        },
+        "url": {
+          "type": "string"
+        },
+        "kind": {
+          "type": "string",
+          "enum": [
+            "article",
+            "podcast",
+            "video",
+            "transcript"
+          ]
+        },
+        "lang": {
+          "type": "string",
+          "const": "en"
+        },
         "study_card": {
           "type": "object",
-          "required": ["word_count", "segment_count", "difficulty", "estimated_days", "main_practice", "value_points", "suggested_pace"],
+          "required": [
+            "word_count",
+            "segment_count",
+            "difficulty",
+            "estimated_days",
+            "main_practice",
+            "value_points",
+            "suggested_pace"
+          ],
           "additionalProperties": false,
           "properties": {
-            "word_count": {"type": "integer", "minimum": 1},
-            "segment_count": {"type": "integer", "minimum": 1},
-            "difficulty": {"type": "string", "minLength": 1},
-            "estimated_days": {"type": "integer", "minimum": 1},
-            "main_practice": {"type": "string", "minLength": 1},
+            "word_count": {
+              "type": "integer",
+              "minimum": 1
+            },
+            "segment_count": {
+              "type": "integer",
+              "minimum": 1
+            },
+            "difficulty": {
+              "type": "string",
+              "minLength": 1
+            },
+            "estimated_days": {
+              "type": "integer",
+              "minimum": 1
+            },
+            "main_practice": {
+              "type": "string",
+              "minLength": 1
+            },
             "value_points": {
               "type": "array",
               "minItems": 1,
               "maxItems": 3,
-              "items": {"type": "string", "minLength": 1}
+              "items": {
+                "type": "string",
+                "minLength": 1
+              }
             },
-            "suggested_pace": {"type": "string", "minLength": 1}
+            "suggested_pace": {
+              "type": "string",
+              "minLength": 1
+            }
           }
+        },
+        "title_zh": {
+          "type": "string",
+          "minLength": 1
         }
       }
     },
     "voice": {
       "type": "object",
-      "required": ["engine", "voice", "rate", "speed"],
+      "required": [
+        "engine",
+        "voice",
+        "rate",
+        "speed"
+      ],
       "additionalProperties": true,
       "properties": {
-        "engine": {"type": "string", "enum": ["edge", "kokoro"]},
-        "voice": {"type": "string", "minLength": 1},
-        "rate": {"type": "string", "minLength": 1},
-        "speed": {"type": "number", "minimum": 0.5, "maximum": 2.0}
+        "engine": {
+          "type": "string",
+          "enum": [
+            "edge",
+            "kokoro"
+          ]
+        },
+        "voice": {
+          "type": "string",
+          "minLength": 1
+        },
+        "rate": {
+          "type": "string",
+          "minLength": 1
+        },
+        "speed": {
+          "type": "number",
+          "minimum": 0.5,
+          "maximum": 2.0
+        }
       }
     },
     "segments": {
@@ -51,25 +137,65 @@
       "minItems": 1,
       "items": {
         "type": "object",
-        "required": ["id", "en", "tts", "zh", "hard"],
+        "required": [
+          "id",
+          "en",
+          "tts",
+          "zh",
+          "hard"
+        ],
         "additionalProperties": true,
         "properties": {
-          "id": {"type": "string", "pattern": "^seg-[0-9]{2,}$"},
-          "spk": {"type": "string"},
-          "t": {"type": "integer", "minimum": 0},
-          "en": {"type": "string", "minLength": 1},
-          "tts": {"type": "string", "minLength": 1},
-          "zh": {"type": "string", "minLength": 1},
+          "id": {
+            "type": "string",
+            "pattern": "^seg-[0-9]{2,}$"
+          },
+          "spk": {
+            "type": "string"
+          },
+          "t": {
+            "type": "integer",
+            "minimum": 0
+          },
+          "en": {
+            "type": "string",
+            "minLength": 1
+          },
+          "tts": {
+            "type": "string",
+            "minLength": 1
+          },
+          "zh": {
+            "type": "string",
+            "minLength": 1
+          },
           "hard": {
             "type": "array",
             "items": {
               "type": "object",
-              "required": ["w", "type", "def"],
+              "required": [
+                "w",
+                "type",
+                "def"
+              ],
               "additionalProperties": false,
               "properties": {
-                "w": {"type": "string", "minLength": 1},
-                "type": {"type": "string", "enum": ["term", "word", "idiom"]},
-                "def": {"type": "string", "minLength": 1}
+                "w": {
+                  "type": "string",
+                  "minLength": 1
+                },
+                "type": {
+                  "type": "string",
+                  "enum": [
+                    "term",
+                    "word",
+                    "idiom"
+                  ]
+                },
+                "def": {
+                  "type": "string",
+                  "minLength": 1
+                }
               }
             }
           }
@@ -80,12 +206,25 @@
       "type": "array",
       "items": {
         "type": "object",
-        "required": ["t", "cn", "eg"],
+        "required": [
+          "t",
+          "cn",
+          "eg"
+        ],
         "additionalProperties": false,
         "properties": {
-          "t": {"type": "string", "minLength": 1},
-          "cn": {"type": "string", "minLength": 1},
-          "eg": {"type": "string", "minLength": 1}
+          "t": {
+            "type": "string",
+            "minLength": 1
+          },
+          "cn": {
+            "type": "string",
+            "minLength": 1
+          },
+          "eg": {
+            "type": "string",
+            "minLength": 1
+          }
         }
       }
     },
@@ -93,11 +232,20 @@
       "type": "array",
       "items": {
         "type": "object",
-        "required": ["t", "cn"],
+        "required": [
+          "t",
+          "cn"
+        ],
         "additionalProperties": false,
         "properties": {
-          "t": {"type": "string", "minLength": 1},
-          "cn": {"type": "string", "minLength": 1}
+          "t": {
+            "type": "string",
+            "minLength": 1
+          },
+          "cn": {
+            "type": "string",
+            "minLength": 1
+          }
         }
       }
     },
@@ -106,19 +254,35 @@
       "maxItems": 2,
       "items": {
         "type": "object",
-        "required": ["genre", "task", "hint_chunks"],
+        "required": [
+          "genre",
+          "task",
+          "hint_chunks"
+        ],
         "additionalProperties": false,
         "properties": {
           "genre": {
             "type": "string",
-            "enum": ["slack_message", "pr_description", "design_note", "standup_update", "code_review_comment"]
+            "enum": [
+              "slack_message",
+              "pr_description",
+              "design_note",
+              "standup_update",
+              "code_review_comment"
+            ]
           },
-          "task": {"type": "string", "minLength": 1},
+          "task": {
+            "type": "string",
+            "minLength": 1
+          },
           "hint_chunks": {
             "type": "array",
             "minItems": 3,
             "maxItems": 3,
-            "items": {"type": "string", "minLength": 1}
+            "items": {
+              "type": "string",
+              "minLength": 1
+            }
           }
         }
       }
@@ -129,13 +293,30 @@
         "type": "object",
         "additionalProperties": false,
         "properties": {
-          "def": {"type": "string", "minLength": 1},
-          "ipa": {"type": "string", "pattern": "^/.+/$"},
-          "lemma": {"type": "string", "minLength": 1}
+          "def": {
+            "type": "string",
+            "minLength": 1
+          },
+          "ipa": {
+            "type": "string",
+            "pattern": "^/.+/$"
+          },
+          "lemma": {
+            "type": "string",
+            "minLength": 1
+          }
         },
         "anyOf": [
-          {"required": ["def"]},
-          {"required": ["lemma"]}
+          {
+            "required": [
+              "def"
+            ]
+          },
+          {
+            "required": [
+              "lemma"
+            ]
+          }
         ]
       }
     }

@@ -88,3 +88,12 @@ def test_lexicon_ipa_format():
         pass
     else:
         raise AssertionError("schema accepted ipa without /slashes/")
+
+
+def test_meta_title_zh_is_optional_string():
+    data = load_demo()
+    assert data["meta"]["title_zh"]
+    jsonschema.validate(data, SCHEMA)
+    legacy = load_demo()
+    del legacy["meta"]["title_zh"]
+    jsonschema.validate(legacy, SCHEMA)  # 老课无中文标题仍合法
