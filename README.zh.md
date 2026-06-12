@@ -11,7 +11,7 @@
 
 ## 这是什么
 
-- 面向本地已安装 OpenCode / Codex / Claude Code 的开发者。
+- 面向英语学习者，尤其是本地已有 agent（Claude Code / Codex / OpenCode）的用户：agent 负责编译课程，你负责学。
 - 产物是可离线打开的 HTML5 学习页。
 - 默认使用 Edge TTS 生成 mp3。
 - 朗读逐词高亮，读到哪亮到哪；点任意单词即从该词播放。
@@ -39,7 +39,7 @@
 
 编译好的示例课在 [`docs/demo/index.html`](docs/demo/index.html)——clone 后浏览器直接打开即可，无需安装。
 
-同一页面已通过 GitHub Pages 在线提供：<https://rayw-lab.github.io/immersion-reader/demo/>。
+同一页面已通过 GitHub Pages 在线提供：<https://rayw-lab.github.io/english-immersion-reader/demo/>。
 
 ## 快速开始
 

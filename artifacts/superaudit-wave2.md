@@ -96,7 +96,7 @@ Anthropic failed=0
 ## Boundary Checks
 
 - No public publish command was run.
-- `gh repo view rayw-lab/immersion-reader` returned repository-not-found on 2026-06-11, so the planned name remains available at this checkpoint.
+- `gh repo view rayw-lab/english-immersion-reader` returned repository-not-found on 2026-06-11, so the planned name remains available at this checkpoint.
 - No third-party dogfood source text/audio is intentionally shipped in tracked release assets. The dogfood outputs stay local under ignored `lessons/`; an extra SoundHound study draft was removed from the tracked tree during cleanup.
 - `lessons/` remains local-only and ignored.
 - `docs/demo` uses the repository-owned demo lesson and tracked demo audio.

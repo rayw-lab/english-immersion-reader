@@ -232,11 +232,11 @@ def test_release_candidate_assets_and_docs_exist():
     release = (ROOT / "docs" / "release" / "wave2-publish-candidate.md").read_text(encoding="utf-8")
     assert "state=wave2-shipped-candidate" in release
     assert "Do not run these commands before human review" in release
-    assert "gh repo create rayw-lab/immersion-reader --public" in release
+    assert "gh repo create rayw-lab/english-immersion-reader --public" in release
     assert "HN Show HN and V2EX are human-review channels" in release
     awesome = (ROOT / "docs" / "release" / "awesome-agent-skills-entry.md").read_text(encoding="utf-8")
     assert "VoltAgent/awesome-agent-skills" in awesome
-    assert "https://github.com/rayw-lab/immersion-reader/tree/main/skills/immersion-reader" in awesome
+    assert "https://github.com/rayw-lab/english-immersion-reader/tree/main/skills/immersion-reader" in awesome
     dogfood = (ROOT / "docs" / "release" / "dogfood-real-content-report.md").read_text(encoding="utf-8")
     assert "lessons/dogfood-openai-harness/index.html" in dogfood
     assert "lessons/dogfood-anthropic-harnesses/index.html" in dogfood

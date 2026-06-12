@@ -7,14 +7,14 @@ state=wave2-shipped-candidate
 Do not run these commands before human review:
 
 ```bash
-gh repo create rayw-lab/immersion-reader --public --source=. --remote=origin --push
-gh repo edit rayw-lab/immersion-reader --enable-pages
+gh repo create rayw-lab/english-immersion-reader --public --source=. --remote=origin --push
+gh repo edit rayw-lab/english-immersion-reader --enable-pages
 git tag v0.1.0 && git push origin v0.1.0
 ```
 
 ## Repository Defaults
 
-- Repository name: `immersion-reader`; `gh repo view rayw-lab/immersion-reader` returned not found on 2026-06-11.
+- Repository name: `immersion-reader`; `gh repo view rayw-lab/english-immersion-reader` returned not found on 2026-06-11.
 - License: MIT.
 - Chinese README filename: `README.zh.md`.
 - Pages source after publish: `/docs`, demo path `/demo/`.
@@ -25,7 +25,7 @@ git tag v0.1.0 && git push origin v0.1.0
 
 1. Create the public GitHub repository and push `main`.
 2. Enable GitHub Pages from `/docs`.
-3. Confirm `https://rayw-lab.github.io/immersion-reader/demo/` loads.
+3. Confirm `https://rayw-lab.github.io/english-immersion-reader/demo/` loads.
 4. Create tag `v0.1.0`.
 5. Submit the low-barrier awesome-list PR draft in `docs/release/awesome-agent-skills-entry.md`.
 6. Defer travisvn/awesome-claude-skills until the repo has roughly 10+ stars.

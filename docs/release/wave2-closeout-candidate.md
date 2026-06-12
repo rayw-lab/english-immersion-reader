@@ -93,7 +93,7 @@ Russell AUDIT-PASS I-1-I-13
 - `@browser` MCP was occupied by another automation Chrome profile during manual open; equivalent Playwright Chromium smoke passed.
 - Dogfood lessons intentionally keep low lexicon coverage warnings. They are local dogfood pages, not polished public examples.
 - Screenshot artifacts were refreshed by browser verification and remain in the worktree for human review.
-- `gh repo view rayw-lab/immersion-reader` returned repository-not-found on 2026-06-11; public creation/push remains gated by human review.
+- `gh repo view rayw-lab/english-immersion-reader` returned repository-not-found on 2026-06-11; public creation/push remains gated by human review.
 
 ## Human Gate
 

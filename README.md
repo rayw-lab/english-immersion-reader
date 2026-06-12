@@ -12,7 +12,7 @@ Turn a long-form English article or transcript into a local static deep-reading 
 ## What this is
 
 - A static lesson package compiler.
-- Built for developers who already use local agents such as OpenCode, Codex, or Claude Code.
+- Built for English learners who already live in a local coding agent (Claude Code, Codex, or OpenCode): your agent compiles the lesson, you study it.
 - Output opens as local HTML.
 - Edge TTS is the default audio path.
 - Karaoke-style word highlight follows the audio; click any word to play from it.
@@ -39,7 +39,7 @@ Use the page's copy prompts with your local agent when you need help with a word
 
 A compiled demo lesson lives at [`docs/demo/index.html`](docs/demo/index.html) — clone, then open it directly in a browser. No install needed.
 
-The same page is served via GitHub Pages: <https://rayw-lab.github.io/immersion-reader/demo/>.
+The same page is served via GitHub Pages: <https://rayw-lab.github.io/english-immersion-reader/demo/>.
 
 ## Quickstart
 
