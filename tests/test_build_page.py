@@ -198,3 +198,30 @@ def test_build_injects_word_timings_placeholder(tmp_path):
     html = (out / "index.html").read_text(encoding="utf-8")
     assert "window.__WORD_TIMINGS__" in html
     assert "{{WORD_TIMINGS_JSON}}" not in html
+
+
+def test_word_timings_drops_sidecar_from_different_run(tmp_path):
+    import json as _json
+    audio = tmp_path / "audio"
+    audio.mkdir()
+    (audio / "seg-01.mp3").write_bytes(b"x" * 1000)
+    (audio / "seg-01.words.json").write_text(_json.dumps({
+        "mp3_bytes": 999,  # 指纹失配 = 不同合成 run
+        "words": [{"text": "Hello", "t0": 0.0, "t1": 0.4}, {"text": "world", "t0": 0.5, "t1": 0.9}],
+    }))
+    (audio / "seg-02.mp3").write_bytes(b"y" * 500)
+    (audio / "seg-02.words.json").write_text(_json.dumps({
+        "mp3_bytes": 500,  # 指纹一致
+        "words": [{"text": "Good", "t0": 0.0, "t1": 0.3}, {"text": "day", "t0": 0.4, "t1": 0.7}],
+    }))
+    import importlib, sys as _sys
+    _sys.path.insert(0, str(ROOT / "src"))
+    bp = importlib.import_module("build_page")
+    segments = [
+        {"id": "seg-01", "en": "Hello world"},
+        {"id": "seg-02", "en": "Good day"},
+    ]
+    mismatched = []
+    timings = bp.word_timings(tmp_path, segments, mismatched)
+    assert "seg-01" not in timings and mismatched == ["seg-01"]
+    assert "seg-02" in timings

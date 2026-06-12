@@ -77,8 +77,13 @@ def audio_status(out_dir: Path, segments: list[dict], word_terms: list[str] | No
     return {"missing": missing, "count": len(segments), "word_missing": word_missing, "word_count": len(word_terms or [])}
 
 
-def word_timings(out_dir: Path, segments: list[dict]) -> dict:
-    """Align each segment's WordBoundary sidecar (if present) to its display text."""
+def word_timings(out_dir: Path, segments: list[dict], mismatched: list[str] | None = None) -> dict:
+    """Align each segment's WordBoundary sidecar (if present) to its display text.
+
+    Sidecars carry an mp3-size fingerprint; a mismatch means the timings came
+    from a different synthesis run than the mp3 on disk — drop them (a missing
+    highlight beats a drifting one) and report via `mismatched`.
+    """
     timings: dict[str, list[list[float]]] = {}
     for seg in segments:
         sidecar = out_dir / "audio" / f"{seg['id']}.words.json"
@@ -88,6 +93,14 @@ def word_timings(out_dir: Path, segments: list[dict]) -> dict:
             words = json.loads(sidecar.read_text(encoding="utf-8"))
         except json.JSONDecodeError:
             continue
+        if isinstance(words, dict):
+            expected = words.get("mp3_bytes")
+            mp3 = out_dir / "audio" / f"{seg['id']}.mp3"
+            if expected is not None and (not mp3.exists() or mp3.stat().st_size != expected):
+                if mismatched is not None:
+                    mismatched.append(seg["id"])
+                continue
+            words = words.get("words") or []
         aligned = align_words(words, seg["en"])
         if aligned:
             timings[seg["id"]] = [
@@ -129,9 +142,14 @@ def closeout(data: dict, out_dir: Path) -> str:
     ]
     if coverage["ratio"] < LEXICON_COVERAGE_WARN_THRESHOLD:
         lines.append(f"⚠ 词典覆盖低于 80%，缺 {len(coverage['missing'])} 词，建议补 lexicon 后再交付")
-    timings = word_timings(out_dir, data["segments"])
+    mismatched: list[str] = []
+    timings = word_timings(out_dir, data["segments"], mismatched)
     if timings:
         lines.append(f"逐词同步数据: {len(timings)}/{len(data['segments'])} 段已生成")
+    if mismatched:
+        lines.append(
+            f"⚠ {len(mismatched)} 段时间戳与音频不同源({', '.join(mismatched[:5])}), 已丢弃防漂移; 重跑: python src/tts_generate.py <segments.json> --out <lesson>/audio --force"
+        )
     if status["missing"]:
         lines.append(
             f"⚠ {len(status['missing'])} 段音频缺失, 页面自动用浏览器朗读兜底; 重跑: python src/tts_generate.py <segments.json> --out <lesson>/audio"

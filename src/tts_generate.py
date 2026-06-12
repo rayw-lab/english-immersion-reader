@@ -228,7 +228,10 @@ async def stream_with_word_boundaries(communicate, job: SegmentJob) -> None:
                     "t0": round(start, 3),
                     "t1": round(start + chunk["duration"] / 10_000_000, 3),
                 })
-    job.words_output.write_text(json.dumps(words, ensure_ascii=False), encoding="utf-8")
+    # bind the sidecar to this exact mp3: a size fingerprint lets the build
+    # detect (and drop) timings that came from a different synthesis run
+    payload = {"mp3_bytes": job.output.stat().st_size, "words": words}
+    job.words_output.write_text(json.dumps(payload, ensure_ascii=False), encoding="utf-8")
 
 
 async def synthesize_kokoro(jobs: Sequence[SegmentJob], voice: str, rate: str) -> int:
